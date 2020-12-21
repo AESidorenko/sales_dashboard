@@ -7,6 +7,8 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Hello, <?= $name ?></h1>
+<h1 class="hello">Hello, <?= $name ?></h1>
+<p id="text-paragraph"></p>
+<script src="build/index.bundle.js"></script>
 </body>
 </html>
