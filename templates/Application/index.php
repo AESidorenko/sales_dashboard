@@ -7,8 +7,19 @@
     <title>Title</title>
 </head>
 <body>
-<h1 class="hello">Hello, <?= $name ?></h1>
-<p id="text-paragraph"></p>
+
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-6 p-3">
+            <div class="logo">Sales Dashboard</div>
+        </div>
+        <div class="col-6 text-right p-3">
+            <input type="text" name="daterange" value="<?= $date['since'] ?> - <?= $date['till'] ?>">
+        </div>
+    </div>
+</div>
+
 <script src="build/index.bundle.js"></script>
+
 </body>
 </html>
