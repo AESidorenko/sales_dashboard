@@ -1,15 +1,21 @@
-const path = require('path');
+const path    = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    entry:  {
+    entry:   {
         index: './assets/js/index.js',
-        print: './assets/js/index.js',
     },
-    output: {
+    plugins: [
+        new webpack.ProvidePlugin({
+            $:      'jquery',
+            jQuery: 'jquery',
+        }),
+    ],
+    output:  {
         filename: '[name].bundle.js',
         path:     path.resolve(__dirname, 'public/build'),
     },
-    module: {
+    module:  {
         rules: [
             {
                 test: /\.css$/i,
