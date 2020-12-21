@@ -26,4 +26,9 @@ class Request
     {
         return self::$instance ?? new Request($_GET, $_POST, $_FILES, $_SERVER);
     }
+
+    public function getMethod(): string
+    {
+        return $this->server->get('REQUEST_METHOD');
+    }
 }
