@@ -55,7 +55,7 @@ export default class App
                 return;
             }
 
-            fetch(url)
+            fetch(`${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then(response => response.json())
                 .then(function(data) {
                     element.chart.showData(data);

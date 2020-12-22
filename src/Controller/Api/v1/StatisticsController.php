@@ -2,16 +2,20 @@
 
 namespace App\Controller\Api\v1;
 
+use App\Helper\ParameterValidator;
+use App\Platform\Http\JsonResponse;
+use App\Platform\Http\Request;
 use App\Platform\Http\Response;
 use App\Repository\CustomerRepository;
 use App\Repository\OrderItemRepository;
 use App\Repository\OrderRepository;
+use DateTimeImmutable;
 
 class StatisticsController
 {
-    public function ordersAction(OrderRepository $orderRepository): Response
+    public function ordersAction(OrderRepository $orderRepository, Request $request): Response
     {
-        $orders = $orderRepository->findAll();
+        $orders = $orderRepository->findOrdersNumberByPeriod();
 
         return new Response(json_encode(['title' => 'orders']));
     }
@@ -23,10 +27,17 @@ class StatisticsController
         return new Response(json_encode(['title' => 'revenues']));
     }
 
-    public function customersAction(CustomerRepository $customerRepository): Response
+    public function customersAction(CustomerRepository $customerRepository, Request $request): JsonResponse
     {
-        $customers = $customerRepository->findAll();
+        $startDate = $request->query->get('startDate', '');
+        $endDate   = $request->query->get('endDate', '');
 
-        return new Response(json_encode(['title' => 'customers']));
+        if (!ParameterValidator::isValidDateString($startDate) || !ParameterValidator::isValidDateString($endDate)) {
+            throw new \Exception('Bad request. Invalid date.', 400);
+        }
+
+        $customersByDays = $customerRepository->findCustomersNumberForPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
+
+        return new JsonResponse(['data' => json_decode(json_encode($customersByDays, true))]);
     }
 }

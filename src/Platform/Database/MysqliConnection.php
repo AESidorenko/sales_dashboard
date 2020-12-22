@@ -33,9 +33,9 @@ class MysqliConnection implements DatabaseConnectionInterface
 
     public function query(string $sql, array $params = [])
     {
+        $params        = self::escapeParams($params);
         $executableSQL = sprintf($sql, ...$params);
-        $sanitizedSQL  = self::$connection->real_escape_string($executableSQL);
-        $result        = self::$connection->query($sanitizedSQL);
+        $result        = self::$connection->query($executableSQL);
         if (self::$connection->errno) {
             throw new RuntimeException(sprintf('Database query error: %d - %s', self::$connection->errno, self::$connection->error));
         }

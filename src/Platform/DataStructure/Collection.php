@@ -20,7 +20,7 @@ class Collection
         return array_key_exists($key, $this->collection);
     }
 
-    public function get(string $key, string $default = null): string
+    public function get(string $key, string $default = null): ?string
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }

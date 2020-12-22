@@ -12,7 +12,7 @@ class Order implements EntityInterface
     private string             $device;
     private int                $customer_id;
 
-    static function getTableName(): string
+    public static function getTableName(): string
     {
         return 'order';
     }
