@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Platform\Component;
 
+use App\Platform\Database\DatabaseConnectionFactory;
+use App\Platform\Database\DatabaseConnectionInterface;
 use App\Platform\Http\Request;
 use App\Platform\Http\Response;
 use DI\Container;
@@ -19,10 +21,16 @@ class Application
     public function handle(Request $request): Response
     {
         // todo: refactor container initialization
+        $configManager = ConfigurationManager::loadConfiguration();
+
         $container = new Container();
 
         $container->set(Request::class, $request);
         $container->set(Application::class, $this);
+        $container->set(
+            DatabaseConnectionInterface::class,
+            DatabaseConnectionFactory::get($configManager->get('dbType'), $configManager->get('dbSchema'))
+        );
 
         $controller = self::getControllerFromRequest($request);
 

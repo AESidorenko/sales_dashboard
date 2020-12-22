@@ -11,9 +11,6 @@ class Response
     private string $content;
     private int    $responseCode;
 
-    /**
-     * Response constructor.
-     */
     public function __construct(string $content = "", int $responseCode = 200, array $headers = [])
     {
         $this->content      = $content;
