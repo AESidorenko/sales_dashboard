@@ -8,10 +8,32 @@ import '../css/style.css';
 import '../components/daterangepicker/daterangepicker.js';
 import '../components/daterangepicker/daterangepicker.css';
 
+import App from './app';
+
 $(function() {
-    $('input[name="daterange"]').daterangepicker({
-        opens: 'left',
-    }, function(start, end, label) {
-        console.log('A new date selection was made: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    const app = new App({
+        chartsContainer: 'charts',
+        charts:          {
+            ordersChartBlock:    {
+                title:     'Total number of orders',
+                parameter: 'orders',
+            },
+            revenuesChartBlock:  {
+                title:     'Total number of revenue',
+                parameter: 'revenues',
+            },
+            customersChartBlock: {
+                title:     'Total number of customers',
+                parameter: 'customers',
+            },
+        },
     });
-});
+
+    $('#dateRangePicker').daterangepicker({
+        opens: 'left',
+    });
+
+    app.bindPicker($('#dateRangePicker'));
+    app.run();
+})
+;

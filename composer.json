@@ -12,7 +12,8 @@
     "require": {
         "php-di/php-di": "^6.3",
         "ext-http": "*",
-        "ext-mysqli": "*"
+        "ext-mysqli": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

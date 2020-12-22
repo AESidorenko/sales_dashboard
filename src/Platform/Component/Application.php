@@ -33,10 +33,16 @@ class Application
     {
         // todo: handle exceptions properly
 
-        var_dump($exception);
-
         $response = new Response();
-        $response->setContent('Exception: ' . $exception->getMessage());
+
+        if ($exception->getCode() === 404) {
+            $response->setResponseCode(404);
+        } else {
+            // todo: remove debug output
+            var_dump($exception);
+            $response->setResponseCode(500);
+            $response->setContent('Exception: ' . $exception->getMessage());
+        }
 
         return $response;
     }
@@ -50,7 +56,9 @@ class Application
     {
         // todo: move routes array to config
         $routes = [
-            '/api/v1/example' => 'App\Controller\Api\v1\ExampleController::demoAction'
+            '/api/v1/statistics/orders'    => 'App\Controller\Api\v1\StatisticsController::ordersAction',
+            '/api/v1/statistics/revenues'  => 'App\Controller\Api\v1\StatisticsController::revenuesAction',
+            '/api/v1/statistics/customers' => 'App\Controller\Api\v1\StatisticsController::customersAction',
         ];
 
         $requestedPath = '/' . strtolower(trim(explode('?', $uri, 2)[0], '/'));
