@@ -8,11 +8,6 @@ use App\Platform\Http\Request;
 
 define("ENV", "DEV");
 
-// todo: remove debug messages
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 $request = Request::createFromGlobals();
 
 $application = new Application();

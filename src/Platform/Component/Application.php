@@ -9,6 +9,7 @@ use App\Platform\Http\Request;
 use App\Platform\Http\Response;
 use DI\Container;
 use Exception;
+use Throwable;
 
 class Application
 {
@@ -37,19 +38,19 @@ class Application
         return $container->call($controller);
     }
 
-    public function handleException(Exception $exception): Response
+    public function handleException(Throwable $exception): Response
     {
-        // todo: handle exceptions properly
-
         $response = new Response();
 
-        if ($exception->getCode() === 404) {
-            $response->setResponseCode(404);
-        } else {
-            // todo: remove debug output
-            var_dump($exception);
-            $response->setResponseCode(500);
-            $response->setContent('Exception: ' . $exception->getMessage());
+        if ($exception instanceof HttpProblemJsonException) {
+            if ($exception->getCode() === 404) {
+                $response->setResponseCode(404);
+            } else {
+                // todo: remove debug output
+                var_dump($exception);
+                $response->setResponseCode(500);
+                $response->setContent('Exception: ' . $exception->getMessage());
+            }
         }
 
         return $response;
