@@ -23,7 +23,7 @@ class AbstractController
         }
 
         if (array_key_exists('templateVars', $templateVars)) {
-            throw new RuntimeException('Template variable $templateFilename is reserved and not allowed to use');
+            throw new RuntimeException('Template variable $templateVars is reserved and not allowed to use');
         }
 
         extract($templateVars);

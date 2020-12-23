@@ -9,8 +9,8 @@ abstract class HttpProblemJsonException extends \Exception
     protected const FIELD_TITLE          = 'title';
     protected const FIELD_DETAIL         = 'detail';
     protected const FIELD_INVALID_PARAMS = 'invalid-params';
-    protected const FIELD_NAME           = 'name';
-    protected const FIELD_REASON         = 'reason';
+    public const    FIELD_NAME           = 'name';
+    public const    FIELD_REASON         = 'reason';
 
     protected int   $statusCode = 500;
     protected array $rfcFields  = [self::FIELD_TITLE => 'Internal server error'];
