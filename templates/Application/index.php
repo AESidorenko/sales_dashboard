@@ -15,7 +15,7 @@
             <div class="logo">Sales Dashboard</div>
         </div>
         <div class="col-6 text-right p-3">
-            <input id="dateRangePicker" type="text" name="daterange" value="<?= $date['since'] ?> - <?= $date['till'] ?>">
+            Select date range: <input id="dateRangePicker" type="text" name="daterange" value="<?= $date['since'] ?> - <?= $date['till'] ?>">
         </div>
     </div>
 
