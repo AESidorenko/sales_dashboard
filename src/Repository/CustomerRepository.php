@@ -34,4 +34,22 @@ class CustomerRepository extends AbstractRepository
             'y' => (int)$row->customers_number
         ], self::query($sql, $params, false));
     }
+
+    public function getTotalCustomersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    {
+        $dateSince = $startDate->format('Y-m-d');
+        $dateTill  = $endDate->format('Y-m-d');
+
+        $sql = "SELECT      COUNT(DISTINCT c.id) total_customers
+                FROM        `%s` o
+                INNER JOIN  `%s` c
+                ON          o.customer_id = c.id
+                WHERE 		o.purchase_date BETWEEN '$dateSince' AND '$dateTill'";
+
+        $params = [Order::getTableName(), Customer::getTableName()];
+
+        $result = self::query($sql, $params, false);
+
+        return $result[0]->total_customers;
+    }
 }

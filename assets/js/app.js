@@ -63,8 +63,29 @@ export default class App
                 .then(response => response.json())
                 .then(function(data) {
                     element.chart.showData(data, this.picker.data('daterangepicker').startDate, this.picker.data('daterangepicker').endDate);
-                }.bind(this));
+                }.bind(this))
+                .catch(function() {
+                    element.chart.showError();
+                }.bind(this))
+            ;
         }, this);
+
+        $('#total-customers').text(`Customers: -`);
+        $('#total-orders').text(`Orders: -`);
+        $('#total-revenue').text(`Revenue: -`);
+
+        fetch(`/api/v1/statistics/summary?startDate=${startDate}&endDate=${endDate}`, {
+            method:  'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+            .then(response => response.json())
+            .then(function(data) {
+                $('#total-customers').text(`Customers: ${data.summary.totalCustomers}`);
+                $('#total-orders').text(`Orders: ${data.summary.totalOrders}`);
+                $('#total-revenue').text(`Revenue: ${data.summary.totalRevenue}`);
+            }.bind(this));
     }
 
     apiMapCollectionToUrl(collectionName)

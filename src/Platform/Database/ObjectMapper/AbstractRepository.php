@@ -11,7 +11,7 @@ abstract class AbstractRepository
     protected static string                      $entityClassname;
     protected static string                      $tablename;
 
-    protected function __construct(DatabaseConnectionInterface $connection, string $entityClassname)
+    public function __construct(DatabaseConnectionInterface $connection, string $entityClassname)
     {
         self::$connection      = $connection;
         self::$entityClassname = $entityClassname;
