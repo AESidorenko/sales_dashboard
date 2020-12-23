@@ -38,10 +38,12 @@ class AbstractController
 
         ob_clean();
 
-        $response = (new Response())
-            ->setHeaders([]) // todo: set headers properly
-            ->setContent($content);
+        $response = new Response($content, 200, self::getDefaultHeaders());
 
         return $response;
+    }
+
+    private static function getDefaultHeaders()
+    {
     }
 }
