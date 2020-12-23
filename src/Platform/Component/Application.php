@@ -62,7 +62,7 @@ class Application
             return new JsonResponse([], 500);
         }
 
-        return new JsonResponse($exception->getRfcFields(), $exception->getCode());
+        return new JsonResponse($exception->getRfcFields(), $exception->getCode(), ['Content-Type: application/problem+json']);
     }
 
     private function getControllerFromRequest(Request $originalRequest): string
@@ -89,7 +89,7 @@ class Application
             return sprintf('%s::%s', $controllerName, $actionName);
         }
 
-        throw new Exception(sprintf('Route "%s" not found', $requestedPath), 404);
+        throw new Exception(sprintf('Page "%s" not found', $requestedPath), 404);
     }
 
     private function guessDefaultUriMapping(string $requestedPath): array

@@ -3,7 +3,7 @@
 namespace App\Controller\Api\v1;
 
 use App\Exception\ApiBadRequestException;
-use App\Exception\ApiForbiddenException;
+use App\Exception\ForbiddenException;
 use App\Helper\ParameterValidator;
 use App\Platform\Http\JsonResponse;
 use App\Platform\Http\Request;
@@ -46,7 +46,7 @@ class StatisticsController
     private function validateAjax(Request $request): void
     {
         if (!$request->isAjax()) {
-            throw new ApiForbiddenException('Forbidden', 'Only XHTTP requests allowed');
+            throw new ForbiddenException('Forbidden. Only XHTTP requests allowed.');
         }
     }
 
@@ -56,8 +56,8 @@ class StatisticsController
             throw new ApiBadRequestException('Invalid URL parameter', 'Required parameter is invalid or missing',
                 [
                     [
-                        ApiForbiddenException::FIELD_NAME   => 'startDate',
-                        ApiForbiddenException::FIELD_REASON => 'must have date format: YYYY-MM-DD'
+                        ApiBadRequestException::FIELD_NAME   => 'startDate',
+                        ApiBadRequestException::FIELD_REASON => 'must have date format: YYYY-MM-DD'
                     ]
                 ]);
         }
@@ -66,8 +66,8 @@ class StatisticsController
             throw new ApiBadRequestException('Invalid URL parameter', 'Required parameter is invalid or missing',
                 [
                     [
-                        ApiForbiddenException::FIELD_NAME   => 'endDate',
-                        ApiForbiddenException::FIELD_REASON => 'must have date format: YYYY-MM-DD'
+                        ApiBadRequestException::FIELD_NAME   => 'endDate',
+                        ApiBadRequestException::FIELD_REASON => 'must have date format: YYYY-MM-DD'
                     ]
                 ]);
         }
@@ -76,12 +76,12 @@ class StatisticsController
             throw new ApiBadRequestException('Invalid URL parameters values', 'Start of period must be less or equal than the end',
                 [
                     [
-                        ApiForbiddenException::FIELD_NAME   => 'startDate',
-                        ApiForbiddenException::FIELD_REASON => 'must be more or equal than endDate'
+                        ApiBadRequestException::FIELD_NAME   => 'startDate',
+                        ApiBadRequestException::FIELD_REASON => 'must be more or equal than endDate'
                     ],
                     [
-                        ApiForbiddenException::FIELD_NAME   => 'endDate',
-                        ApiForbiddenException::FIELD_REASON => 'must be less or equal than startDate'
+                        ApiBadRequestException::FIELD_NAME   => 'endDate',
+                        ApiBadRequestException::FIELD_REASON => 'must be less or equal than startDate'
                     ],
                 ]);
         }

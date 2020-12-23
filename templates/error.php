@@ -19,11 +19,11 @@
     <div>
         <p class="h4">Error</p>
         <p><?= $message ?></p>
-        <a href="/">Return to main page"</a>
+        <a href="/">Return to main page</a>
     </div>
 </div>
 
-<script src="build/platform.bundle.js"></script>
+<script src="/build/platform.bundle.js"></script>
 
 </body>
 </html>

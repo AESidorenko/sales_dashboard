@@ -38,12 +38,13 @@ class AbstractController
 
         ob_clean();
 
-        $response = new Response($content, 200, self::getDefaultHeaders());
-
-        return $response;
+        return new Response($content, 200, self::getDefaultHeaders());
     }
 
-    private static function getDefaultHeaders()
+    private static function getDefaultHeaders(): array
     {
+        return [
+            'Content-Type' => 'text/html; charset=utf-8',
+        ];
     }
 }

@@ -54,7 +54,12 @@ export default class App
                 return;
             }
 
-            fetch(`${url}?startDate=${startDate}&endDate=${endDate}`)
+            fetch(`${url}?startDate=${startDate}&endDate=${endDate}`, {
+                method:  'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
                 .then(response => response.json())
                 .then(function(data) {
                     element.chart.showData(data, this.picker.data('daterangepicker').startDate, this.picker.data('daterangepicker').endDate);
