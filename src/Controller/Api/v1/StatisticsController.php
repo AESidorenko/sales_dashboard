@@ -43,6 +43,28 @@ class StatisticsController
         return new JsonResponse(['datasets' => [$revenues, $orders], 'labels' => ['Revenues', 'Orders']]);
     }
 
+    public function summaryAction(OrderRepository $orderRepository, CustomerRepository $customerRepository, Request $request)
+    {
+        $this->validateAjax($request);
+
+        $startDate = $request->query->get('startDate', '');
+        $endDate   = $request->query->get('endDate', '');
+
+        $this->validateDateRange($startDate, $endDate);
+
+        $totalOrders    = $orderRepository->getTotalOrdersByPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
+        $totalRevenue   = $orderRepository->getTotalRevenueByPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
+        $totalCustomers = $customerRepository->getTotalCustomersByPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
+
+        return new JsonResponse([
+            'summary' => [
+                'totalCustomers' => $totalCustomers,
+                'totalRevenue'   => $totalRevenue,
+                'totalOrders'    => $totalOrders,
+            ]
+        ]);
+    }
+
     private function validateAjax(Request $request): void
     {
         if (!$request->isAjax()) {

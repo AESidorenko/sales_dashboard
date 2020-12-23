@@ -52,4 +52,38 @@ class OrderRepository extends AbstractRepository
             'y' => (int)$row->revenue
         ], self::query($sql, $params, false));
     }
+
+    public function getTotalRevenueByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    {
+        $dateSince = $startDate->format('Y-m-d');
+        $dateTill  = $endDate->format('Y-m-d');
+
+        $sql = "SELECT      SUM(oi.quantity * oi.price) total_revenue
+                FROM        `%s` o
+                INNER JOIN  `%s` oi
+                ON          oi.order_id = o.id
+                WHERE 		o.purchase_date BETWEEN '$dateSince' AND '$dateTill'";
+
+        $params = [Order::getTableName(), OrderItem::getTableName()];
+
+        $result = self::query($sql, $params, false);
+
+        return $result[0]->total_revenue;
+    }
+
+    public function getTotalOrdersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    {
+        $dateSince = $startDate->format('Y-m-d');
+        $dateTill  = $endDate->format('Y-m-d');
+
+        $sql = "SELECT      COUNT(o.id) total_orders
+                FROM        `%s` o
+                WHERE 		o.purchase_date BETWEEN '$dateSince' AND '$dateTill'";
+
+        $params = [Order::getTableName()];
+
+        $result = self::query($sql, $params, false);
+
+        return $result[0]->total_orders;
+    }
 }

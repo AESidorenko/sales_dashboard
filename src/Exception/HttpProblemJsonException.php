@@ -6,7 +6,7 @@ namespace App\Exception;
 
 abstract class HttpProblemJsonException extends \Exception
 {
-    protected const FIELD_TITLE          = 'title';
+    public const    FIELD_TITLE          = 'title';
     protected const FIELD_DETAIL         = 'detail';
     protected const FIELD_INVALID_PARAMS = 'invalid-params';
     public const    FIELD_NAME           = 'name';

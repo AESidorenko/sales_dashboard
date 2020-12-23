@@ -59,10 +59,18 @@ class Application
     public function handleAjaxException(Throwable $exception): JsonResponse
     {
         if (!$exception instanceof HttpProblemJsonException) {
-            return new JsonResponse([], 500);
+            if ($exception->getCode() < 100) {
+                $title = 'Internal server error';
+                $code  = 500;
+            } else {
+                $title = $exception->getMessage();
+                $code  = $exception->getCode();
+            }
+
+            return new JsonResponse([HttpProblemJsonException::FIELD_TITLE => $title], $code, ['Content-Type' => 'application/problem+json']);
         }
 
-        return new JsonResponse($exception->getRfcFields(), $exception->getCode(), ['Content-Type: application/problem+json']);
+        return new JsonResponse($exception->getRfcFields(), $exception->getCode(), ['Content-Type' => 'application/problem+json']);
     }
 
     private function getControllerFromRequest(Request $originalRequest): string
@@ -77,6 +85,7 @@ class Application
             '/api/v1/statistics/orders'    => 'App\Controller\Api\v1\StatisticsController::ordersAction',
             '/api/v1/statistics/revenues'  => 'App\Controller\Api\v1\StatisticsController::revenuesAction',
             '/api/v1/statistics/customers' => 'App\Controller\Api\v1\StatisticsController::customersAction',
+            '/api/v1/statistics/summary'   => 'App\Controller\Api\v1\StatisticsController::summaryAction',
         ];
 
         $requestedPath = '/' . strtolower(trim(explode('?', $uri, 2)[0], '/'));

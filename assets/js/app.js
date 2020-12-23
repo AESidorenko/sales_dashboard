@@ -65,6 +65,19 @@ export default class App
                     element.chart.showData(data, this.picker.data('daterangepicker').startDate, this.picker.data('daterangepicker').endDate);
                 }.bind(this));
         }, this);
+
+        fetch(`/api/v1/statistics/summary?startDate=${startDate}&endDate=${endDate}`, {
+            method:  'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+            .then(response => response.json())
+            .then(function(data) {
+                $('#total-customers').text(`Customers: ${data.summary.totalCustomers}`);
+                $('#total-orders').text(`Orders: ${data.summary.totalOrders}`);
+                $('#total-revenue').text(`Revenue: ${data.summary.totalRevenue}`);
+            }.bind(this));
     }
 
     apiMapCollectionToUrl(collectionName)

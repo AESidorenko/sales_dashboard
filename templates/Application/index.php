@@ -19,10 +19,21 @@
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-header">Total</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 text-left" id="total-customers"></div>
+                <div class="col-4 text-center" id="total-revenue"></div>
+                <div class="col-4 text-right" id="total-orders"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="charts" class="cards"></div>
 </div>
 
-<script src="build/index.bundle.js"></script>
+<script src="/build/index.bundle.js"></script>
 
 </body>
 </html>
