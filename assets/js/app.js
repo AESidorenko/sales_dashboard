@@ -55,9 +55,11 @@ export default class App
                 return;
             }
 
-            fetch(url)
+            fetch(`${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(function(data) {
+                    element.chart.showData(data.points);
+                });
         }, this);
     }
 

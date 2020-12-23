@@ -26,4 +26,11 @@ class StringNormalizerHelper
 
         return $urlComponents;
     }
+
+    public static function toCamelCase(string $string): string
+    {
+        $parts = explode('_', $string);
+
+        return lcfirst(implode(array_map('ucfirst', $parts)));
+    }
 }

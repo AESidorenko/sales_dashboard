@@ -15,15 +15,15 @@ $(function() {
         chartsContainer: 'charts',
         charts:          {
             ordersChartBlock:    {
-                title:     'Total number of orders',
+                title:     'Orders',
                 parameter: 'orders',
             },
             revenuesChartBlock:  {
-                title:     'Total number of revenue',
+                title:     'Revenues',
                 parameter: 'revenues',
             },
             customersChartBlock: {
-                title:     'Total number of customers',
+                title:     'Customers',
                 parameter: 'customers',
             },
         },
