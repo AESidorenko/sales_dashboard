@@ -16,8 +16,7 @@ $application->setRootDir(realpath(__DIR__ . '/..'));
 try {
     $response = $application->handle($request);
 } catch (Exception $exception) {
-    // todo: handle exception
-    $response = $application->handleException($exception);
+    $response = $application->handleException($exception, $request);
 }
 
 $response->outputHeaders();

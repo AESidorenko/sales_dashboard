@@ -17,7 +17,7 @@ class StatisticsController
         $endDate   = $request->query->get('endDate', '');
 
         if (!ParameterValidator::isValidDateString($startDate) || !ParameterValidator::isValidDateString($endDate)) {
-            throw new \Exception('Bad request. Invalid date.', 400);
+            throw new ApiBadRequestException('Bad request. Invalid date.', 400);
         }
 
         $orders    = $orderRepository->findTotalOrdersByPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));

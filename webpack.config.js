@@ -2,8 +2,9 @@ const path    = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry:   {
-        index: './assets/js/index.js',
+    entry: {
+        index:    './assets/js/index.js',
+        platform: './assets/js/platform.js',
     },
     plugins: [
         new webpack.ProvidePlugin({
