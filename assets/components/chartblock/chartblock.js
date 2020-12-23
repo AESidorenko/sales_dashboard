@@ -78,11 +78,14 @@ export default class ChartBlock
                             },
                         },
                         {
-                            id:       'B',
-                            type:     'linear',
-                            position: 'right',
-                            ticks:    {
+                            id:        'B',
+                            type:      'linear',
+                            position:  'right',
+                            ticks:     {
                                 min: 0,
+                            },
+                            gridLines: {
+                                display: false,
                             },
                         },
                     ],
