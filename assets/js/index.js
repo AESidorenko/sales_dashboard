@@ -14,23 +14,22 @@ $(function() {
     const app = new App({
         chartsContainer: 'charts',
         charts:          {
-            ordersChartBlock:    {
-                title:     'Orders',
-                parameter: 'orders',
+            ordersChartBlock:   {
+                title:      'Customers vs Orders',
+                parameter:  'customers',
             },
-            revenuesChartBlock:  {
-                title:     'Revenues',
-                parameter: 'revenues',
-            },
-            customersChartBlock: {
-                title:     'Customers',
-                parameter: 'customers',
-            },
+            revenuesChartBlock: {
+                title:      'Revenues vs Orders',
+                parameter:  'revenues',
+            }
         },
     });
 
     $('#dateRangePicker').daterangepicker({
-        opens: 'left',
+        opens:  'left',
+        locale: {
+            format: 'DD/MM/YYYY',
+        },
     });
 
     app.bindPicker($('#dateRangePicker'));

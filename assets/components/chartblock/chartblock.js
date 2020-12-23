@@ -4,6 +4,7 @@ export default class ChartBlock
 {
     constructor(options)
     {
+        this.chart              = null;
         this.options            = options;
         this.template           = document.createElement('template');
         this.template.innerHTML = `
@@ -24,19 +25,31 @@ export default class ChartBlock
         document.getElementById(options.container).appendChild(this.template.content);
     }
 
-    showData(dataPoints)
+    showData(data, startDate, endDate)
     {
-        console.log(this.options.id, dataPoints);
-
         const ctx = document.getElementById(`${this.options.id}-chart`).getContext('2d');
 
-        const chart = new Chart(ctx, {
+        this.chart ? this.chart.destroy() : true;
+        this.chart = new Chart(ctx, {
             type:    'bar',
             data:    {
                 datasets: [
                     {
-                        data:     dataPoints,
-                        spanGaps: false,
+                        label:           data.labels[0],
+                        data:            data.datasets[0],
+                        yAxisID:         'A',
+                        borderColor:     'rgb(15,24,62)',
+                        backgroundColor: 'rgba(65, 92, 200, 0.75)',
+                        order:           1,
+                    },
+                    {
+                        label:       data.labels[1],
+                        data:        data.datasets[1],
+                        yAxisID:     'B',
+                        type:        'line',
+                        fill:        false,
+                        borderColor: 'rgba(182, 53, 76, 1)',
+                        order:       2,
                     },
                 ],
             },
@@ -45,11 +58,34 @@ export default class ChartBlock
                 scales:      {
                     xAxes: [
                         {
-                            type: 'time',
-                            time: {
+                            type:  'time',
+                            time:  {
                                 unit: 'day',
                             },
-                        }],
+                            ticks: {
+                                min: startDate,
+                                max: endDate,
+                            },
+                        },
+                    ],
+                    yAxes: [
+                        {
+                            id:       'A',
+                            type:     'linear',
+                            position: 'left',
+                            ticks:    {
+                                min: 0,
+                            },
+                        },
+                        {
+                            id:       'B',
+                            type:     'linear',
+                            position: 'right',
+                            ticks:    {
+                                min: 0,
+                            },
+                        },
+                    ],
                 },
             },
         });

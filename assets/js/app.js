@@ -7,7 +7,6 @@ export default class App
     #currentEndDate     = null;
     #allowedChartParams = ['orders', 'revenues', 'customers'];
     #collectionUrlMap   = {
-        'orders':    '/api/v1/statistics/orders',
         'revenues':  '/api/v1/statistics/revenues',
         'customers': '/api/v1/statistics/customers',
     };
@@ -58,8 +57,8 @@ export default class App
             fetch(`${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then(response => response.json())
                 .then(function(data) {
-                    element.chart.showData(data.points);
-                });
+                    element.chart.showData(data, this.picker.data('daterangepicker').startDate, this.picker.data('daterangepicker').endDate);
+                }.bind(this));
         }, this);
     }
 

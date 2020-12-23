@@ -15,8 +15,8 @@ class ApplicationController extends AbstractController
         return $this->render('Application/index', [
             'name' => 'Anton',
             'date' => [
-                'since' => $now->modify('-1 month')->format('m/d/Y'),
-                'till'  => $now->format('m/d/Y'),
+                'since' => $now->modify('-1 month')->format('d/m/Y'),
+                'till'  => $now->format('d/m/Y'),
             ],
         ]);
     }
