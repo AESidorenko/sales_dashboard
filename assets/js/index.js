@@ -14,18 +14,16 @@ $(function() {
     const app = new App({
         chartsContainer: 'charts',
         charts:          {
-            ordersChartBlock:    {
-                title:     'Orders',
-                parameter: 'orders',
+            ordersChartBlock:   {
+                title:      'Customers vs Orders',
+                parameter:  'customers',
+                dataSource: 'customers',
             },
-            revenuesChartBlock:  {
-                title:     'Revenues',
-                parameter: 'revenues',
-            },
-            customersChartBlock: {
-                title:     'Customers',
-                parameter: 'customers',
-            },
+            revenuesChartBlock: {
+                title:      'Revenues vs Orders',
+                parameter:  'revenues',
+                dataSource: 'revenues',
+            }
         },
     });
 

@@ -43,6 +43,11 @@ class MysqliConnection implements DatabaseConnectionInterface
         return $result;
     }
 
+    public function getLastInsertId()
+    {
+        return self::$connection->insert_id;
+    }
+
     private static function escapeParams(array $params)
     {
         return array_map(fn(string $p) => self::$connection->real_escape_string($p), $params);

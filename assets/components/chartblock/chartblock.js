@@ -24,10 +24,8 @@ export default class ChartBlock
         document.getElementById(options.container).appendChild(this.template.content);
     }
 
-    showData(dataPoints)
+    showData(data)
     {
-        console.log(this.options.id, dataPoints);
-
         const ctx = document.getElementById(`${this.options.id}-chart`).getContext('2d');
 
         const chart = new Chart(ctx, {
@@ -35,8 +33,16 @@ export default class ChartBlock
             data:    {
                 datasets: [
                     {
-                        data:     dataPoints,
-                        spanGaps: false,
+                        label:   data.labels[0],
+                        data:    data.datasets[0],
+                        yAxisID: 'A',
+                    },
+                    {
+                        label:   data.labels[1],
+                        data:    data.datasets[1],
+                        yAxisID: 'B',
+                        type:    'line',
+                        fill:    false,
                     },
                 ],
             },
@@ -49,7 +55,26 @@ export default class ChartBlock
                             time: {
                                 unit: 'day',
                             },
-                        }],
+                        },
+                    ],
+                    yAxes: [
+                        {
+                            id:       'A',
+                            type:     'linear',
+                            position: 'left',
+                            ticks:    {
+                                min: 0,
+                            },
+                        },
+                        {
+                            id:       'B',
+                            type:     'linear',
+                            position: 'right',
+                            ticks:    {
+                                min: 0,
+                            },
+                        },
+                    ],
                 },
             },
         });
