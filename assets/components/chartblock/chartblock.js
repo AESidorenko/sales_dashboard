@@ -15,7 +15,7 @@ export default class ChartBlock
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         <span class="card-text pl-1">Loading chart data...</span>
                     </div>
-                    <div id="${options.id}-error" class="loading-error d-none"></div>
+                    <div id="${options.id}-error" class="loading-error d-none">Error getting data</div>
                     <div id="${options.id}-chart-container" class="chart d-none">
                         <canvas id="${options.id}-chart"></canvas>
                     </div>
@@ -96,5 +96,12 @@ export default class ChartBlock
         $(`#${this.options.id}-in-progress`).addClass('d-none');
         $(`#${this.options.id}-error`).addClass('d-none');
         $(`#${this.options.id}-chart-container`).removeClass('d-none');
+    }
+
+    showError()
+    {
+        $(`#${this.options.id}-in-progress`).addClass('d-none');
+        $(`#${this.options.id}-error`).removeClass('d-none');
+        $(`#${this.options.id}-chart-container`).addClass('d-none');
     }
 }
