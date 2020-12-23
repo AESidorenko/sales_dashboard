@@ -17,18 +17,19 @@ $(function() {
             ordersChartBlock:   {
                 title:      'Customers vs Orders',
                 parameter:  'customers',
-                dataSource: 'customers',
             },
             revenuesChartBlock: {
                 title:      'Revenues vs Orders',
                 parameter:  'revenues',
-                dataSource: 'revenues',
             }
         },
     });
 
     $('#dateRangePicker').daterangepicker({
-        opens: 'left',
+        opens:  'left',
+        locale: {
+            format: 'DD/MM/YYYY',
+        },
     });
 
     app.bindPicker($('#dateRangePicker'));

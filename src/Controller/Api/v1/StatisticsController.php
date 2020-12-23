@@ -38,6 +38,6 @@ class StatisticsController
         $orders   = $orderRepository->findTotalOrdersByPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
         $revenues = $orderRepository->findRevenuesByPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
 
-        return new JsonResponse(['datasets' => [$revenues, $orders], 'labels' => ['Customers', 'Orders']]);
+        return new JsonResponse(['datasets' => [$revenues, $orders], 'labels' => ['Revenues', 'Orders']]);
     }
 }
