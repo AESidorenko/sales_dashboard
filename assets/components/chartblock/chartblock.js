@@ -24,24 +24,18 @@ export default class ChartBlock
         document.getElementById(options.container).appendChild(this.template.content);
     }
 
-    showData(data)
+    showData(dataPoints)
     {
-        console.log(`${this.options.id}-chart-container`);
+        console.log(this.options.id, dataPoints);
 
         const ctx = document.getElementById(`${this.options.id}-chart`).getContext('2d');
 
         const chart = new Chart(ctx, {
-            type:    'line',
+            type:    'bar',
             data:    {
                 datasets: [
                     {
-                        data:     [
-                            {t: new Date(2018, 8, 20), y: 10},
-                            {t: new Date(2018, 8, 21), y: 20},
-                            {t: new Date(2020, 9, 21), y: null},
-                            {t: new Date(2020, 10, 10), y: 15},
-                            {t: new Date(2020, 10, 25), y: 10},
-                        ],
+                        data:     dataPoints,
                         spanGaps: false,
                     },
                 ],

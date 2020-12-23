@@ -38,6 +38,6 @@ class StatisticsController
 
         $customersByDays = $customerRepository->findCustomersNumberForPeriod(new DateTimeImmutable($startDate), new DateTimeImmutable($endDate));
 
-        return new JsonResponse(['data' => json_decode(json_encode($customersByDays, true))]);
+        return new JsonResponse(['points' => json_decode(json_encode($customersByDays), true)]);
     }
 }
