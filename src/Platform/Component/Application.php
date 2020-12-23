@@ -3,12 +3,16 @@ declare(strict_types=1);
 
 namespace App\Platform\Component;
 
+use App\Controller\ErrorHandlerController;
+use App\Exception\HttpProblemJsonException;
 use App\Platform\Database\DatabaseConnectionFactory;
 use App\Platform\Database\DatabaseConnectionInterface;
+use App\Platform\Http\JsonResponse;
 use App\Platform\Http\Request;
 use App\Platform\Http\Response;
 use DI\Container;
 use Exception;
+use Throwable;
 
 class Application
 {
@@ -37,22 +41,28 @@ class Application
         return $container->call($controller);
     }
 
-    public function handleException(Exception $exception): Response
+    public function handleException(Throwable $exception, Request $request): Response
     {
-        // todo: handle exceptions properly
-
-        $response = new Response();
-
-        if ($exception->getCode() === 404) {
-            $response->setResponseCode(404);
-        } else {
-            // todo: remove debug output
-            var_dump($exception);
-            $response->setResponseCode(500);
-            $response->setContent('Exception: ' . $exception->getMessage());
+        if ($request->isAjax()) {
+            return $this->handleAjaxException($exception);
         }
 
-        return $response;
+        if ($exception->getCode() < 400) {
+            $message = 'Internal server error';
+        } else {
+            $message = $exception->getMessage();
+        }
+
+        return (new ErrorHandlerController($this))->renderErrorPage($message);
+    }
+
+    public function handleAjaxException(Throwable $exception): JsonResponse
+    {
+        if (!$exception instanceof HttpProblemJsonException) {
+            return new JsonResponse([], 500);
+        }
+
+        return new JsonResponse($exception->getRfcFields(), $exception->getCode(), ['Content-Type: application/problem+json']);
     }
 
     private function getControllerFromRequest(Request $originalRequest): string
@@ -79,7 +89,7 @@ class Application
             return sprintf('%s::%s', $controllerName, $actionName);
         }
 
-        throw new Exception(sprintf('Route "%s" not found', $requestedPath), 404);
+        throw new Exception(sprintf('Page "%s" not found', $requestedPath), 404);
     }
 
     private function guessDefaultUriMapping(string $requestedPath): array

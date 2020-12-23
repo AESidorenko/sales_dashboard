@@ -1,21 +1,32 @@
-const path    = require('path');
-const webpack = require('webpack');
+const path         = require('path');
+const webpack      = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-    entry:   {
-        index: './assets/js/index.js',
+    entry:        {
+        index:    './assets/js/index.js',
+        platform: './assets/js/platform.js',
     },
-    plugins: [
+    plugins:      [
         new webpack.ProvidePlugin({
             $:      'jquery',
             jQuery: 'jquery',
         }),
     ],
-    output:  {
+    output:       {
         filename: '[name].bundle.js',
         path:     path.resolve(__dirname, 'public/build'),
     },
-    module:  {
+    optimization: {
+        minimize:  true,
+        minimizer: [
+            new TerserPlugin({
+                test:    /\.js(\?.*)?$/i,
+                exclude: /node_modules/,
+            }),
+        ],
+    },
+    module:       {
         rules: [
             {
                 test:    /\.(js)$/,

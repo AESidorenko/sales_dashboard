@@ -23,7 +23,7 @@ class AbstractController
         }
 
         if (array_key_exists('templateVars', $templateVars)) {
-            throw new RuntimeException('Template variable $templateFilename is reserved and not allowed to use');
+            throw new RuntimeException('Template variable $templateVars is reserved and not allowed to use');
         }
 
         extract($templateVars);
@@ -38,10 +38,13 @@ class AbstractController
 
         ob_clean();
 
-        $response = (new Response())
-            ->setHeaders([]) // todo: set headers properly
-            ->setContent($content);
+        return new Response($content, 200, self::getDefaultHeaders());
+    }
 
-        return $response;
+    private static function getDefaultHeaders(): array
+    {
+        return [
+            'Content-Type' => 'text/html; charset=utf-8',
+        ];
     }
 }
