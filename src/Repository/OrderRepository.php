@@ -28,7 +28,7 @@ class OrderRepository extends AbstractRepository
 
         $params = [Order::getTableName()];
 
-        $result = self::query($sql, $params, false);
+        $result = $this->query($sql, $params, false);
 
         $result->rewind();
 
@@ -57,7 +57,7 @@ class OrderRepository extends AbstractRepository
 
         $params = [Order::getTableName(), OrderItem::getTableName()];
 
-        $result = self::query($sql, $params, false);
+        $result = $this->query($sql, $params, false);
 
         $resultArray = [];
         foreach ($result as $row) {
@@ -83,7 +83,7 @@ class OrderRepository extends AbstractRepository
 
         $params = [Order::getTableName(), OrderItem::getTableName()];
 
-        $result = self::query($sql, $params, false);
+        $result = $this->query($sql, $params, false);
 
         return (float)$result->current()->total_revenue;
     }
@@ -99,7 +99,7 @@ class OrderRepository extends AbstractRepository
 
         $params = [Order::getTableName()];
 
-        $result = self::query($sql, $params, false);
+        $result = $this->query($sql, $params, false);
 
         return (int)$result->current()->total_orders;
     }

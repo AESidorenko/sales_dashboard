@@ -29,7 +29,7 @@ class CustomerRepository extends AbstractRepository
 
         $params = [Order::getTableName(), Customer::getTableName()];
 
-        $result = self::query($sql, $params, false);
+        $result = $this->query($sql, $params, false);
 
         $resultArray = [];
         foreach ($result as $row) {
@@ -55,7 +55,7 @@ class CustomerRepository extends AbstractRepository
 
         $params = [Order::getTableName(), Customer::getTableName()];
 
-        $result = self::query($sql, $params, false);
+        $result = $this->query($sql, $params, false);
 
         return $result->current()->total_customers;
     }

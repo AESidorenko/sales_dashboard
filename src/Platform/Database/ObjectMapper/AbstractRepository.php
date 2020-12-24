@@ -9,19 +9,19 @@ use Iterator;
 abstract class AbstractRepository
 {
     protected static DatabaseConnectionInterface $connection;
-    protected static string                      $entityClassname;
-    protected static string                      $tablename;
+    protected string                             $entityClassname;
+    protected string                             $tablename;
 
     public function __construct(DatabaseConnectionInterface $connection, string $entityClassname)
     {
         self::$connection      = $connection;
-        self::$entityClassname = $entityClassname;
-        self::$tablename       = $entityClassname::getTableName();
+        $this->entityClassname = $entityClassname;
+        $this->tablename       = $entityClassname::getTableName();
     }
 
     public function findOne(string $id): ?EntityInterface
     {
-        $result = self::query("SELECT * FROM %s WHERE id=%s", [self::$tablename, $id]);
+        $result = $this->query("SELECT * FROM `%s` WHERE id=%s", [$this->tablename, $id]);
         if (iterator_count($result) === 0) {
             return null;
         }
@@ -31,7 +31,7 @@ abstract class AbstractRepository
 
     public function findOneBy(string $condition): ?EntityInterface
     {
-        $result = self::query("SELECT * FROM %s WHERE %s", [self::$tablename, $condition]);
+        $result = $this->query("SELECT * FROM `%s` WHERE %s", [$this->tablename, $condition]);
         if (iterator_count($result) === 0) {
             return null;
         }
@@ -41,7 +41,7 @@ abstract class AbstractRepository
 
     public function findBy(string $condition = 'true'): Iterator
     {
-        $result = self::query("SELECT * FROM %s WHERE %s", [self::$tablename, $condition]);
+        $result = $this->query("SELECT * FROM `%s` WHERE %s", [$this->tablename, $condition]);
         if (iterator_count($result) === 0) {
             return new EmptyIterator();
         }
@@ -51,7 +51,7 @@ abstract class AbstractRepository
 
     public function findAll(): Iterator
     {
-        $result = self::query("SELECT * FROM %s", [self::$tablename]);
+        $result = $this->query("SELECT * FROM `%s`", [$this->tablename]);
         if (iterator_count($result) === 0) {
             return new EmptyIterator();
         }
@@ -59,14 +59,14 @@ abstract class AbstractRepository
         return $result;
     }
 
-    protected static function query(string $sql, array $params, bool $map = true): Iterator
+    protected function query(string $sql, array $params, bool $map = true): Iterator
     {
-        return self::$connection->query($sql, $params, $map ? self::$entityClassname : 'stdClass');
+        return self::$connection->query($sql, $params, $map ? $this->entityClassname : 'stdClass');
     }
 
-    protected static function queryArrayResult(string $sql, array $params, bool $map = true): array
+    protected function queryArrayResult(string $sql, array $params, bool $map = true): array
     {
-        $result = self::query($sql, $params, $map);
+        $result = $this->query($sql, $params, $map);
 
         return iterator_to_array($result);
     }
