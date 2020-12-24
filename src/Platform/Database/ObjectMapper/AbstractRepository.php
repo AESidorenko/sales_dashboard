@@ -2,8 +2,9 @@
 
 namespace App\Platform\Database\ObjectMapper;
 
-use App\Helper\StringNormalizerHelper;
 use App\Platform\Database\DatabaseConnectionInterface;
+use EmptyIterator;
+use Iterator;
 
 abstract class AbstractRepository
 {
@@ -21,63 +22,52 @@ abstract class AbstractRepository
     public function findOne(string $id): ?EntityInterface
     {
         $result = self::query("SELECT * FROM %s WHERE id=%s", [self::$tablename, $id]);
-        if (count($result) === 0) {
+        if (iterator_count($result) === 0) {
             return null;
         }
 
-        return $result[0];
+        return $result->current();
     }
 
     public function findOneBy(string $condition): ?EntityInterface
     {
         $result = self::query("SELECT * FROM %s WHERE %s", [self::$tablename, $condition]);
-        if (count($result) === 0) {
+        if (iterator_count($result) === 0) {
             return null;
         }
 
-        return $result[0];
+        return $result->current();
     }
 
-    public function findBy(string $condition = 'true'): array
+    public function findBy(string $condition = 'true'): Iterator
     {
         $result = self::query("SELECT * FROM %s WHERE %s", [self::$tablename, $condition]);
-        if (count($result) === 0) {
-            return [];
+        if (iterator_count($result) === 0) {
+            return new EmptyIterator();
         }
 
         return $result;
     }
 
-    public function findAll(): array
+    public function findAll(): Iterator
     {
         $result = self::query("SELECT * FROM %s", [self::$tablename]);
-        if (count($result) === 0) {
-            return [];
+        if (iterator_count($result) === 0) {
+            return new EmptyIterator();
         }
 
         return $result;
     }
 
-    protected static function query(string $sql, array $params, bool $map = true)
+    protected static function query(string $sql, array $params, bool $map = true): Iterator
     {
-        $result = self::$connection->query($sql, $params);
+        return self::$connection->query($sql, $params, $map ? self::$entityClassname : 'stdClass');
+    }
 
-        $arrayResult = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            if ($map) {
-                $object = new self::$entityClassname();
-                foreach ($row as $key => $value) {
-                    $setter = StringNormalizerHelper::toCamelCase('set_' . $key);
-                    $object->$setter($value);
-                }
-                $arrayResult[] = $object;
-            } else {
-                $arrayResult[] = (object)$row;
-            }
-        }
+    protected static function queryArrayResult(string $sql, array $params, bool $map = true): array
+    {
+        $result = self::query($sql, $params, $map);
 
-        mysqli_free_result($result);
-
-        return $arrayResult;
+        return iterator_to_array($result);
     }
 }

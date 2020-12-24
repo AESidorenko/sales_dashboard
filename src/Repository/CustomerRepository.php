@@ -15,7 +15,7 @@ class CustomerRepository extends AbstractRepository
         parent::__construct($connection, Customer::class);
     }
 
-    public function findTotalCustomersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function findTotalCustomersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
     {
         $dateSince = $startDate->format('Y-m-d');
         $dateTill  = $endDate->format('Y-m-d');
@@ -29,13 +29,20 @@ class CustomerRepository extends AbstractRepository
 
         $params = [Order::getTableName(), Customer::getTableName()];
 
-        return array_map(fn($row) => [
-            'x' => (new DateTimeImmutable($row->purchase_date))->getTimestamp() * 1000,
-            'y' => (int)$row->customers_number
-        ], self::query($sql, $params, false));
+        $result = self::query($sql, $params, false);
+
+        $resultArray = [];
+        foreach ($result as $row) {
+            $resultArray[] = [
+                'x' => (new DateTimeImmutable($row->purchase_date))->getTimestamp() * 1000,
+                'y' => (int)$row->customers_number
+            ];
+        }
+
+        return $resultArray;
     }
 
-    public function getTotalCustomersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function getTotalCustomersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate): int
     {
         $dateSince = $startDate->format('Y-m-d');
         $dateTill  = $endDate->format('Y-m-d');
@@ -50,6 +57,6 @@ class CustomerRepository extends AbstractRepository
 
         $result = self::query($sql, $params, false);
 
-        return $result[0]->total_customers;
+        return $result->current()->total_customers;
     }
 }

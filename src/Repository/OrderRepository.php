@@ -15,7 +15,7 @@ class OrderRepository extends AbstractRepository
         parent::__construct($connection, Order::class);
     }
 
-    public function findTotalOrdersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function findTotalOrdersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
     {
         $dateSince = $startDate->format('Y-m-d');
         $dateTill  = $endDate->format('Y-m-d');
@@ -23,17 +23,27 @@ class OrderRepository extends AbstractRepository
         $sql = "SELECT      o.purchase_date purchase_date, COUNT(o.id) orders_number
                 FROM        `%s` o
                 WHERE 		o.purchase_date BETWEEN '$dateSince' AND '$dateTill'
-                GROUP BY	o.purchase_date";
+                GROUP BY	o.purchase_date
+                ORDER BY    o.purchase_date";
 
         $params = [Order::getTableName()];
 
-        return array_map(fn($row) => [
-            'x' => (new DateTimeImmutable($row->purchase_date))->getTimestamp() * 1000,
-            'y' => (int)$row->orders_number
-        ], self::query($sql, $params, false));
+        $result = self::query($sql, $params, false);
+
+        $result->rewind();
+
+        $resultArray = [];
+        foreach ($result as $row) {
+            $resultArray[] = [
+                'x' => (new DateTimeImmutable($row->purchase_date))->getTimestamp() * 1000,
+                'y' => (int)$row->orders_number
+            ];
+        }
+
+        return $resultArray;
     }
 
-    public function findRevenuesByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function findRevenuesByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
     {
         $dateSince = $startDate->format('Y-m-d');
         $dateTill  = $endDate->format('Y-m-d');
@@ -47,13 +57,20 @@ class OrderRepository extends AbstractRepository
 
         $params = [Order::getTableName(), OrderItem::getTableName()];
 
-        return array_map(fn($row) => [
-            'x' => (new DateTimeImmutable($row->purchase_date))->getTimestamp() * 1000,
-            'y' => (int)$row->revenue
-        ], self::query($sql, $params, false));
+        $result = self::query($sql, $params, false);
+
+        $resultArray = [];
+        foreach ($result as $row) {
+            $resultArray[] = [
+                'x' => (new DateTimeImmutable($row->purchase_date))->getTimestamp() * 1000,
+                'y' => (int)$row->revenue
+            ];
+        }
+
+        return $resultArray;
     }
 
-    public function getTotalRevenueByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function getTotalRevenueByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate): float
     {
         $dateSince = $startDate->format('Y-m-d');
         $dateTill  = $endDate->format('Y-m-d');
@@ -68,10 +85,10 @@ class OrderRepository extends AbstractRepository
 
         $result = self::query($sql, $params, false);
 
-        return $result[0]->total_revenue;
+        return (float)$result->current()->total_revenue;
     }
 
-    public function getTotalOrdersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function getTotalOrdersByPeriod(DateTimeImmutable $startDate, DateTimeImmutable $endDate): int
     {
         $dateSince = $startDate->format('Y-m-d');
         $dateTill  = $endDate->format('Y-m-d');
@@ -84,6 +101,6 @@ class OrderRepository extends AbstractRepository
 
         $result = self::query($sql, $params, false);
 
-        return $result[0]->total_orders;
+        return (int)$result->current()->total_orders;
     }
 }
