@@ -2,6 +2,8 @@
 
 namespace App\Platform\Database;
 
+use App\Platform\Database\ObjectMapper\MysqliMappingIterator;
+use Iterator;
 use mysqli;
 use RuntimeException;
 
@@ -31,7 +33,7 @@ class MysqliConnection implements DatabaseConnectionInterface
         }
     }
 
-    public function query(string $sql, array $params = [])
+    public function query(string $sql, array $params = [], string $className = 'stdClass'): Iterator
     {
         $params        = self::escapeParams($params);
         $executableSQL = sprintf($sql, ...$params);
@@ -40,7 +42,7 @@ class MysqliConnection implements DatabaseConnectionInterface
             throw new RuntimeException(sprintf('Database query error: %d - %s', self::$connection->errno, self::$connection->error));
         }
 
-        return $result;
+        return new MysqliMappingIterator($result, $className);
     }
 
     public function getLastInsertId()
