@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace App\Platform\Component;
 
-use App\Platform\DataStructure\Collection;
+use App\Platform\DataStructure\ImmutableCollection;
 use RuntimeException;
 
 class ConfigurationManager
 {
     private static ConfigurationManager $instance;
 
-    private string      $rootDir = '';
-    private Collection  $config;
+    private string               $rootDir = '';
+    private ImmutableCollection  $config;
 
-    private function __construct()
+    public function __construct()
     {
         $this->rootDir = realpath(__DIR__ . '/../../..');
 
@@ -26,15 +26,10 @@ class ConfigurationManager
         if (!is_array($config)) {
             throw new RuntimeException(sprintf('Invalid configuration file %s content', $configFilename));
         }
-        $this->config = new Collection($config);
+        $this->config = new ImmutableCollection($config);
     }
 
-    public static function loadConfiguration(): ConfigurationManager
-    {
-        return self::$instance ?? new ConfigurationManager();
-    }
-
-    public function get(string $paramName): string
+    public function get(string $paramName)
     {
         return $this->config->get($paramName);
     }

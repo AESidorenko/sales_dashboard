@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Platform\DataStructure;
 
-class Collection
+class ImmutableCollection
 {
     private array $collection = [];
 
@@ -20,7 +20,7 @@ class Collection
         return array_key_exists($key, $this->collection);
     }
 
-    public function get(string $key, string $default = null): ?string
+    public function get(string $key, string $default = null)
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }

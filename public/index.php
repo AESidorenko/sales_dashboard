@@ -5,16 +5,18 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Platform\Component\Application;
 use App\Platform\Http\Request;
+use DI\Container;
 
 define("ENV", "DEV");
 
-$request = Request::createFromGlobals();
-
-$application = new Application();
-$application->setRootDir(realpath(__DIR__ . '/..'));
-
 try {
-    $response = $application->handle($request);
+    $container = new Container();
+
+    $request = Request::createFromGlobals();
+    $container->set(Request::class, $request);
+
+    $application = $container->get(Application::class);
+    $response    = $application->handle($request);
 } catch (Exception $exception) {
     $response = $application->handleException($exception, $request);
 }
