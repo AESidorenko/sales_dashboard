@@ -12,11 +12,10 @@ define("ENV", "DEV");
 try {
     $container = new Container();
 
-    $request = Request::createFromGlobals();
-    $container->set(Request::class, $request);
-
+    $request     = $container->get(Request::class);
     $application = $container->get(Application::class);
-    $response    = $application->handle($request);
+
+    $response = $application->handle($request);
 } catch (Exception $exception) {
     $response = $application->handleException($exception, $request);
 }
