@@ -2,7 +2,7 @@
 
 namespace App\Platform\Component;
 
-use Exception;
+use RuntimeException;
 
 class Router
 {
@@ -23,7 +23,7 @@ class Router
         $this->routes = $configurationManager->get('routes');
 
         if (!is_array($this->routes)) {
-            throw new Exception('Invalid routes configuration type: array expected');
+            throw new RuntimeException('Invalid routes configuration type: array expected');
         }
     }
 
@@ -39,7 +39,7 @@ class Router
             return sprintf('%s::%s', $controllerName, $actionName);
         }
 
-        throw new Exception(sprintf('Page/route "%s" not found', $requestedPath), 404);
+        throw new RuntimeException(sprintf('Page/route "%s" not found', $requestedPath), 404);
     }
 
     private function guessDefaultUriMapping(string $requestedPath): array
@@ -77,7 +77,7 @@ class Router
         }
 
         if (!isset($namespaceParts[1]) || $namespaceParts[1] !== 'Controller') {
-            throw new Exception('Controller class must be in <App>\Controller namespace');
+            throw new RuntimeException('Controller class must be in <App>\Controller namespace');
         }
 
         return method_exists($controllerName, $actionName);
