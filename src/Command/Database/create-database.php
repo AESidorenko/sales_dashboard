@@ -5,7 +5,7 @@ use App\Platform\Database\DatabaseConnectionFactory;
 include_once __DIR__ . '/../bootstrap.php';
 
 try {
-    $db = DatabaseConnectionFactory::get($configManager->get('dbType'));
+    $db = DatabaseConnectionFactory::createDatabaseConnection($configManager->get('dbType'));
 
     $options = getopt('d');
     if (array_key_exists('d', $options)) {

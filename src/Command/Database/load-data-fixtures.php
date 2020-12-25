@@ -9,7 +9,7 @@ use App\Platform\Database\DatabaseConnectionInterface;
 include_once __DIR__ . '/../bootstrap.php';
 
 try {
-    $db = DatabaseConnectionFactory::get($configManager->get('dbType'), $configManager->get('dbSchema'));
+    $db = DatabaseConnectionFactory::createDatabaseConnection($configManager->get('dbType'), $configManager->get('dbSchema'));
 
     $customers = createRandomCustomers(10, $db);
     createRandomOrders(new DateTime('2020-11-15'), new DateTime('2020-12-31'), $customers, $db);

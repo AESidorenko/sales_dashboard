@@ -2,7 +2,6 @@
 
 namespace App\Platform\Database;
 
-use App\Platform\Component\ConfigurationManager;
 use RuntimeException;
 
 class DatabaseConnectionFactory
@@ -11,30 +10,33 @@ class DatabaseConnectionFactory
 
     private static $instances = [];
 
-    public static function get(string $dbType, ?string $dbName = null): DatabaseConnectionInterface
+    public static function createDatabaseConnection(array $connectionParameters): DatabaseConnectionInterface
     {
-        $configManager = ConfigurationManager::loadConfiguration();
-
-        switch ($dbType) {
+        switch ($connectionParameters['dbType']) {
             case self::DB_TYPE_MYSQLI:
-                $createConnectionObject = fn() => new MysqliConnection($configManager->get('dbHost'), $configManager->get('dbUsername'),
-                    $configManager->get('dbPassword'), $dbName);
+                $createConnectionObject =
+                    fn(): DatabaseConnectionInterface => new MysqliConnection(
+                        $connectionParameters['dbHost'],
+                        $connectionParameters['dbUsername'],
+                        $connectionParameters['dbPassword'],
+                        $connectionParameters['dbSchema']
+                    );
 
                 break;
             default:
-                throw new RuntimeException(sprintf('Invalid database connection type: %s', $dbType));
+                throw new RuntimeException(sprintf('Invalid database connection type: %s', $connectionParameters['dbType']));
         }
 
         if (!is_callable($createConnectionObject)) {
-            throw new RuntimeException(sprintf('Invalid connection producer for type: %s', $dbType));
+            throw new RuntimeException(sprintf('Invalid connection producer for type: %s', $connectionParameters['dbType']));
         }
 
-        $dbConnectionObject = self::$instances[$dbType] ?? $createConnectionObject();
+        $dbConnectionObject = self::$instances[$connectionParameters['dbType']] ?? $createConnectionObject();
         if (!$dbConnectionObject instanceof DatabaseConnectionInterface) {
-            throw new RuntimeException(sprintf('Invalid connection producer for type: %s', $dbType));
+            throw new RuntimeException(sprintf('Invalid connection producer for type: %s', $connectionParameters['dbType']));
         }
 
-        self::$instances[$dbType] = $dbConnectionObject;
+        self::$instances[$connectionParameters['dbType']] = $dbConnectionObject;
 
         return $dbConnectionObject;
     }

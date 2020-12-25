@@ -11,34 +11,38 @@ use App\Platform\Http\JsonResponse;
 use App\Platform\Http\Request;
 use App\Platform\Http\Response;
 use DI\Container;
-use Exception;
 use Throwable;
 
 class Application
 {
-    const DEFAULT_CONTROLLER_NAMESPACE = 'App\Controller';
-    const DEFAULT_CONTROLLER           = 'ApplicationController';
-    const DEFAULT_ACTION               = 'indexAction';
+    private string                      $rootDir;
+    private Container                   $container;
+    private Router                      $router;
 
-    private string $rootDir;
+    public function __construct(
+        Container $container,
+        ConfigurationManager $configurationManager,
+        Router $router
+    ) {
+        $this->container = $container;
+        $this->router    = $router;
+        $this->rootDir   = realpath(__DIR__ . '/../../..');
+
+        if ($configurationManager->has('dbConnectionParameters')) {
+            $dbConnection = DatabaseConnectionFactory::createDatabaseConnection($configurationManager->get('dbConnectionParameters'));
+
+            $container->set(
+                DatabaseConnectionInterface::class,
+                $dbConnection
+            );
+        }
+    }
 
     public function handle(Request $request): Response
     {
-        // todo: refactor container initialization
-        $configManager = ConfigurationManager::loadConfiguration();
+        $controller = $this->getControllerFromRequest($request);
 
-        $container = new Container();
-
-        $container->set(Request::class, $request);
-        $container->set(Application::class, $this);
-        $container->set(
-            DatabaseConnectionInterface::class,
-            DatabaseConnectionFactory::get($configManager->get('dbType'), $configManager->get('dbSchema'))
-        );
-
-        $controller = self::getControllerFromRequest($request);
-
-        return $container->call($controller);
+        return $this->container->call($controller);
     }
 
     public function handleException(Throwable $exception, Request $request): Response
@@ -75,55 +79,11 @@ class Application
 
     private function getControllerFromRequest(Request $originalRequest): string
     {
-        return $this->mapUri($originalRequest->server->get('REQUEST_URI'));
-    }
-
-    private function mapUri(string $uri): string
-    {
-        // todo: move routes array to config
-        $routes = [
-            '/api/v1/statistics/orders'    => 'App\Controller\Api\v1\StatisticsController::ordersAction',
-            '/api/v1/statistics/revenues'  => 'App\Controller\Api\v1\StatisticsController::revenuesAction',
-            '/api/v1/statistics/customers' => 'App\Controller\Api\v1\StatisticsController::customersAction',
-            '/api/v1/statistics/summary'   => 'App\Controller\Api\v1\StatisticsController::summaryAction',
-        ];
-
-        $requestedPath = '/' . strtolower(trim(explode('?', $uri, 2)[0], '/'));
-        if (array_key_exists($requestedPath, $routes)) {
-            return $routes[$requestedPath];
-        }
-
-        [$controllerName, $actionName] = $this->guessDefaultUriMapping($requestedPath);
-        if (method_exists($controllerName, $actionName)) {
-            return sprintf('%s::%s', $controllerName, $actionName);
-        }
-
-        throw new Exception(sprintf('Page "%s" not found', $requestedPath), 404);
-    }
-
-    private function guessDefaultUriMapping(string $requestedPath): array
-    {
-        $pathComponents = explode('/', trim($requestedPath, '/'));
-
-        if (count($pathComponents) === 1) {
-            $pathComponents[0] = empty($pathComponents[0]) ? self::DEFAULT_ACTION : ($pathComponents[0] . 'Action');
-
-            return [
-                self::DEFAULT_CONTROLLER_NAMESPACE . '\\' . self::DEFAULT_CONTROLLER,
-                $pathComponents[0]
-            ];
-        }
-
-        return ['', ''];
+        return $this->router->mapUriToController($originalRequest->server->get('REQUEST_URI'));
     }
 
     public function getRootDir(): string
     {
         return $this->rootDir;
-    }
-
-    public function setRootDir(string $dir): void
-    {
-        $this->rootDir = $dir;
     }
 }
