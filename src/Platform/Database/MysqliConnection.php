@@ -42,6 +42,10 @@ class MysqliConnection implements DatabaseConnectionInterface
             throw new RuntimeException(sprintf('Database query error: %d - %s', self::$connection->errno, self::$connection->error));
         }
 
+        if (!$result instanceof \mysqli_result) {
+            return new \EmptyIterator();
+        }
+
         return new MysqliMappingIterator($result, $className);
     }
 
