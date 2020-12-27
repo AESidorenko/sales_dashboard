@@ -5,7 +5,7 @@ use App\Platform\Database\DatabaseConnectionFactory;
 include_once __DIR__ . '/../bootstrap.php';
 
 try {
-    $db = DatabaseConnectionFactory::createDatabaseConnection($configManager->get('dbType'), $configManager->get('dbSchema'));
+    $db = DatabaseConnectionFactory::createDatabaseConnection($configManager->get('dbConnectionParameters'));
 
     $createCustomerTableQuery =
         'CREATE TABLE IF NOT EXISTS customer (

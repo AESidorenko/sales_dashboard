@@ -1,0 +1,31 @@
+version: '3'
+services:
+    php:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+        ports:
+            - 8001:80
+        expose:
+            - 3306
+        depends_on:
+            - db
+        environment:
+            WAIT_HOSTS: db:3306
+            WAIT_HOSTS_TIMEOUT: 180
+            WAIT_BEFORE_HOSTS: 20
+        networks:
+            - db-network
+    db:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: sales_dashboard
+        expose:
+            - "3306"
+        networks:
+            - db-network
+
+networks:
+    db-network:
+        driver: bridge

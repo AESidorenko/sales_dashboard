@@ -2,6 +2,8 @@
 
 set -e
 
-php src/Command/Database/create-database.php -d
+echo "Create database schema"
 php src/Command/Database/create-schema.php
+
+echo "Load data fixtures"
 php src/Command/Database/load-data-fixtures.php

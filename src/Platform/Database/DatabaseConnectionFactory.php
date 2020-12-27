@@ -10,7 +10,7 @@ class DatabaseConnectionFactory
 
     private static $instances = [];
 
-    public static function createDatabaseConnection(array $connectionParameters): DatabaseConnectionInterface
+    public static function createDatabaseConnection(array $connectionParameters, bool $selectSchema = true): DatabaseConnectionInterface
     {
         switch ($connectionParameters['dbType']) {
             case self::DB_TYPE_MYSQLI:
@@ -19,7 +19,7 @@ class DatabaseConnectionFactory
                         $connectionParameters['dbHost'],
                         $connectionParameters['dbUsername'],
                         $connectionParameters['dbPassword'],
-                        $connectionParameters['dbSchema']
+                        $selectSchema ? $connectionParameters['dbSchema'] : null
                     );
 
                 break;
