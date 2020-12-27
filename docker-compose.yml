@@ -1,6 +1,6 @@
 version: '3'
 services:
-    symfony:
+    php:
         build:
             context: .
             dockerfile: docker/Dockerfile
