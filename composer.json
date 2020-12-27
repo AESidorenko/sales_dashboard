@@ -11,7 +11,6 @@
     ],
     "require": {
         "php-di/php-di": "^6.3",
-        "ext-http": "*",
         "ext-mysqli": "*",
         "ext-json": "*"
     },

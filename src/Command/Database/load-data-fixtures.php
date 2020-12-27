@@ -11,6 +11,12 @@ include_once __DIR__ . '/../bootstrap.php';
 try {
     $db = DatabaseConnectionFactory::createDatabaseConnection($configManager->get('dbConnectionParameters'));
 
+    $result = $db->query('SELECT COUNT(*) as `count` FROM customer');
+
+    if (($result->current())->count > 0) {
+        exit(0);
+    }
+
     $customers = createRandomCustomers(10, $db);
     createRandomOrders(new DateTime('2020-11-15'), new DateTime('2020-12-31'), $customers, $db);
 

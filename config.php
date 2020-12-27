@@ -2,10 +2,10 @@
 
 return [
     'dbConnectionParameters' => [
-        'dbHost'     => 'localhost',
+        'dbHost'     => 'db',
         'dbUsername' => 'root',
         'dbPassword' => 'password',
-        'dbSchema'   => 'sales-dashboard',
+        'dbSchema'   => 'sales_dashboard',
         'dbType'     => 'mysqli',
     ],
 
