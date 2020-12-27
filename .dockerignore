@@ -1,0 +1,12 @@
+assets
+docker
+node_modules
+vendor
+.babelrc
+.dockerignore
+.gitignore
+docker-compose.yml
+package.json
+package-lock.json
+README.md
+webpack.config
