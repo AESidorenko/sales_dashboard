@@ -90,7 +90,7 @@ The application meets the following task requirements:
 - Bootstrap 4 used as html-framework
 - jQuery used
 
-##Additional features:
+## Additional features:
 - web API methods for getting statistical data:
   - GET api/v1/statistics/revenues
   - GET api/v1/statistics/customers
