@@ -30,7 +30,7 @@ You have **two options** to run the project:
     - after that go to your browser and open the link http://localhost:8001/
     - play!
     
-2) To build the application with local web server:
+2) To run the application with local web server:
 
     Please, check system requirements:
     - PHP 7.4, mysqli extension
