@@ -1,8 +1,8 @@
 # Sales Dashboard Demo Project
 
 Simple dashboard application with the following features:
-- time period selection for data query (top-right page corner).
-**Pre-generated data refer to the period since 2020-11-15 till 2020-12-31**. 
+- time period selection for data query (see top-right page corner).
+**Pre-generated data refer to the period from 2020-11-15 to 2020-12-31**. 
 - shows total number of customers, revenue and orders for the given period
 - shows two charts for statistical data: customers vs orders and revenues vs orders for the given period
 - by default the graphs and statistics present data for the last month
@@ -46,7 +46,7 @@ You have **two options** to run the project:
     ```bash
     npm run build
     ``` 
-    In your database create database named `sales_dashboard` and configure database connection settings in the file `./config.php`. For example:
+    In your database client create a database named `sales_dashboard` and configure database connection settings in the file `./config.php`. For example:
     ```php
     ...
        'dbConnectionParameters' => [
@@ -95,7 +95,7 @@ Additional features:
 - use composer and webpack packages
 - common configuration file `config.php` support database connection config and paths-routing config
 - automated or custom controllers routing
-- support custom database connection interfaces via DatabaseConnectionInterface impementations
+- support custom database connection interfaces via DatabaseConnectionInterface implementations
 - dependency injection into classes constructors
 - custom exception classes inherited from 
 - data charts on the front-page are special JS-components use async data loading
