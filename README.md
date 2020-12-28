@@ -75,7 +75,7 @@ ___
 
 The application meets the following task requirements:
 - is based on MVC architecture:
-  - Controllers in `src/Controller` directory
+  - Controllers are in `src/Controller` directory
   - Models are presented by entity and repository classes in `src/Entity` and `src/Repository` directories
   - Views are templates in `/templates` directory
 - has interfaces:
