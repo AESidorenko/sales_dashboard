@@ -7,7 +7,7 @@ Simple dashboard application with the following features:
 - shows two charts for statistical data: customers vs orders and revenues vs orders for the given period
 - by default the graphs and statistics present data for the last month
 
-How to install
+## How to install
 - go into your local projects directory
 - clone project repository:
 ```bash
