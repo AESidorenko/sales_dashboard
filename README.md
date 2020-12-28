@@ -42,7 +42,11 @@ You have **two options** to run the project:
     ```bash
     composer install
     ```
-    ... PHP packages will be installed, then build JS & CSS:
+    ... PHP packages will be installed, then install and build JS & CSS with:
+    ```bash
+    npm install
+    ``` 
+    and
     ```bash
     npm run build
     ``` 
