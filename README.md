@@ -102,7 +102,7 @@ The application meets the following task requirements:
 - support custom database connection interfaces via DatabaseConnectionInterface implementations
 - dependency injection into classes constructors
 - custom exception classes inherited from App\Exception\HttpProblemJsonException
-- data charts on the front-page are special JS-components use async data loading
+- data charts on the front-page are special JS-components using async data loading
 - cli-scripts in `src/Command` directory
 - system platform code is in the `src/Platform` directory
 - has dockerized version
