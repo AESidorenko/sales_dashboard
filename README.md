@@ -92,9 +92,9 @@ The application meets the following task requirements:
 
 Additional features:
 - web API methods for getting statistical data:
-  - api/v1/statistics/revenues
-  - api/v1/statistics/customers
-  - api/v1/statistics/summary
+  - GET api/v1/statistics/revenues
+  - GET api/v1/statistics/customers
+  - GET api/v1/statistics/summary
 - web API follows the [RFC-7807](https://tools.ietf.org/html/rfc7807) rules for error messaging
 - use composer and webpack packages
 - common configuration file `config.php` support database connection config and paths-routing config
