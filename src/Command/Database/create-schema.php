@@ -23,7 +23,8 @@ try {
             device VARCHAR(255) NULL,
             customer_id INT,
             PRIMARY KEY (id),
-            FOREIGN KEY (customer_id) REFERENCES customer(id)) ENGINE=INNODB';
+            FOREIGN KEY (customer_id) REFERENCES customer(id),
+            INDEX (purchase_date)) ENGINE=INNODB';
 
     $createOrderItemTableQuery =
         'CREATE TABLE IF NOT EXISTS order_item (

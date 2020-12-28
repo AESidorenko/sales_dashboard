@@ -2,7 +2,7 @@
 
 return [
     'dbConnectionParameters' => [
-        'dbHost'     => 'db',
+        'dbHost'     => 'localhost',
         'dbUsername' => 'root',
         'dbPassword' => 'password',
         'dbSchema'   => 'sales_dashboard',
