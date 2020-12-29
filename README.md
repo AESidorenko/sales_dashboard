@@ -81,8 +81,7 @@ The application meets the following task requirements:
 - has interfaces:
   - App\Platform\Database\DatabaseConnectionInterface (implemented by 1 class)
   - App\Platform\Database\ObjectMapper\EntityInterface (implemented by 3 classes)
-- has abstract classes:
-  - App\Platform\Database\ObjectMapper\AbstractRepository (inherited by 3 classes)
+- has one abstract class with inheritances:
   - App\Exception\HttpProblemJsonException (inherited by 3 classes)
 - uses namespaces and follows PSR-4 rules
 - built from scratch, without any PHP frameworks like Symfony, Laravel, etc. Only
