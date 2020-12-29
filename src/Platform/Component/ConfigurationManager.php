@@ -26,6 +26,7 @@ class ConfigurationManager
         if (!is_array($config)) {
             throw new RuntimeException(sprintf('Invalid configuration file %s content', $configFilename));
         }
+
         $this->config = new ImmutableCollection($config);
     }
 

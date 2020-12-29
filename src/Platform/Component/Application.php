@@ -11,6 +11,7 @@ use App\Platform\Http\JsonResponse;
 use App\Platform\Http\Request;
 use App\Platform\Http\Response;
 use DI\Container;
+use RuntimeException;
 use Throwable;
 
 class Application
@@ -28,14 +29,16 @@ class Application
         $this->router    = $router;
         $this->rootDir   = realpath(__DIR__ . '/../../..');
 
-        if ($configurationManager->has('dbConnectionParameters')) {
-            $dbConnection = DatabaseConnectionFactory::createDatabaseConnection($configurationManager->get('dbConnectionParameters'));
-
-            $container->set(
-                DatabaseConnectionInterface::class,
-                $dbConnection
-            );
+        if (!$configurationManager->has('dbConnectionParameters')) {
+            throw new RuntimeException('Config file key not found: dbConnectionParameters');
         }
+
+        $dbConnection = DatabaseConnectionFactory::createDatabaseConnection($configurationManager->get('dbConnectionParameters'));
+
+        $container->set(
+            DatabaseConnectionInterface::class,
+            $dbConnection
+        );
     }
 
     public function handle(Request $request): Response
@@ -74,7 +77,7 @@ class Application
             return new JsonResponse([HttpProblemJsonException::FIELD_TITLE => $title], $code, ['Content-Type' => 'application/problem+json']);
         }
 
-        return new JsonResponse($exception->getRfcFields(), $exception->getCode(), ['Content-Type' => 'application/problem+json']);
+        return new JsonResponse($exception->getCustomRfcFields(), $exception->getCode(), ['Content-Type' => 'application/problem+json']);
     }
 
     private function getControllerFromRequest(Request $originalRequest): string

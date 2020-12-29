@@ -15,15 +15,12 @@ abstract class HttpProblemJsonException extends \Exception
     protected int   $statusCode = 500;
     protected array $rfcFields  = [self::FIELD_TITLE => 'Internal server error'];
 
-    public function __construct(array $customRfcFields)
+    public function __construct()
     {
-        $this->rfcFields = array_merge($this->rfcFields, $customRfcFields);
+        $rfcFields = array_merge($this->rfcFields, $this->getCustomRfcFields());
 
-        parent::__construct(json_encode($customRfcFields), $this->statusCode);
+        parent::__construct(json_encode($rfcFields), $this->statusCode);
     }
 
-    public function getRfcFields(): array
-    {
-        return $this->rfcFields;
-    }
+    abstract protected function getCustomRfcFields(): array;
 }
