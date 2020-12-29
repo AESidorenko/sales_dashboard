@@ -5,7 +5,7 @@ namespace App\Platform\Database\ObjectMapper;
 use App\Platform\Database\DatabaseConnectionInterface;
 use Iterator;
 
-abstract class AbstractRepository
+class AbstractRepository
 {
     protected static DatabaseConnectionInterface $connection;
     protected string                             $entityClassname;
