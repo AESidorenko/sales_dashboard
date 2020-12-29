@@ -17,7 +17,7 @@ class ApiNotFoundException extends HttpProblemJsonException
         parent::__construct();
     }
 
-    protected function getCustomRfcFields(): array
+    public function getCustomRfcFields(): array
     {
         return $this->customRfcFields;
     }
