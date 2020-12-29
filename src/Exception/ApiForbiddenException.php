@@ -17,7 +17,7 @@ class ApiForbiddenException extends HttpProblemJsonException
         parent::__construct();
     }
 
-    public function getCustomRfcFields(): array
+    protected function getCustomRfcFields(): array
     {
         return $this->customRfcFields;
     }
