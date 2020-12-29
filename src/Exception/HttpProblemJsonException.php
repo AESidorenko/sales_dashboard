@@ -17,9 +17,12 @@ abstract class HttpProblemJsonException extends \Exception
 
     public function __construct()
     {
-        $rfcFields = array_merge($this->rfcFields, $this->getCustomRfcFields());
+        parent::__construct('', $this->statusCode);
+    }
 
-        parent::__construct(json_encode($rfcFields), $this->statusCode);
+    public function getRfcFields(): array
+    {
+        return array_merge($this->rfcFields, $this->getCustomRfcFields());
     }
 
     abstract protected function getCustomRfcFields(): array;

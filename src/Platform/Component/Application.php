@@ -77,7 +77,7 @@ class Application
             return new JsonResponse([HttpProblemJsonException::FIELD_TITLE => $title], $code, ['Content-Type' => 'application/problem+json']);
         }
 
-        return new JsonResponse($exception->getCustomRfcFields(), $exception->getCode(), ['Content-Type' => 'application/problem+json']);
+        return new JsonResponse($exception->getRfcFields(), $exception->getCode(), ['Content-Type' => 'application/problem+json']);
     }
 
     private function getControllerFromRequest(Request $originalRequest): string
